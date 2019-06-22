@@ -1,0 +1,26 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/auth-realm: Registry Realm
+    nginx.ingress.kubernetes.io/auth-secret: docker-registry-auth
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/proxy-body-size: '0'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '600'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '600'
+  labels:
+    app: docker-registry
+  name: docker-registry-ingress
+spec:
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - backend:
+              serviceName: docker-registry
+              servicePort: 80
+  tls:
+    - hosts:
+        - example.com
+      secretName: docker-registry-tls
